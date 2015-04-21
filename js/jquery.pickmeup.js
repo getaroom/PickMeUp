@@ -6,7 +6,7 @@
  * @copyright	Copyright (c) 2008-2009, Stefan Petre
  * @license		MIT License, see license.txt
  */
-
+/* jshint camelcase:false */
 (function (d) {
 	function getMaxDays () {
 		var tmpDate	= new Date(this.toString()),
@@ -724,7 +724,12 @@
 					h : document.documentElement.clientHeight
 				},
 				top			= pos.top,
-				left		= pos.left;
+				left		= pos.left
+				, tempPos = options.position || 'auto'
+				, scrollTop = $(window).scrollTop()
+				, top_overflow = -scrollTop + top - pickmeup.outerHeight()
+				, bottom_overflow = scrollTop + viewport.h - (top + pickmeup.outerHeight());
+
 			options.binded.fill();
 			if ($this.is('input')) {
 				$this
@@ -741,7 +746,16 @@
 				return;
 			}
 			if (!options.flat) {
-				switch (options.position){
+				if (tempPos === 'auto') {
+					// If auto, detect which will show more of the calendar top or bottom.
+					if (Math.max(top_overflow, bottom_overflow) === bottom_overflow) {
+						tempPos = 'bottom';
+					}
+					else {
+						tempPos = 'top';
+					}
+				}
+				switch (tempPos){
 					case 'top':
 						top -= pickmeup.outerHeight();
 						break;
