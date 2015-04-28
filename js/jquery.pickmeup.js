@@ -88,6 +88,7 @@
 			months		: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 			monthsShort	: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 		}
+		, events_namespace: '.pickmeup'
 	});
 	var	views	= {
 			years	: 'pmu-view-years',
@@ -733,11 +734,10 @@
 			options.binded.fill();
 			if ($this.is('input')) {
 				$this
+					.off('blur' + options.events_namespace)
 					.pickmeup('set_date', parseDate($this.val() ? $this.val() : options.default_date, options.format, options.separator, options.locale))
-					.keydown(function (e) {
-						if (e.which == 9) {
+					.on('blur' + options.events_namespace, function () {
 							$this.pickmeup('hide');
-						}
 					});
 				options.lastSel = false;
 			}
@@ -1123,9 +1123,9 @@
 				set_date	: set_date.bind(this),
 				destroy		: destroy.bind(this)
 			};
-			options.events_namespace	= '.pickmeup-' + (++instances_count);
+			options.events_namespace	+= '.pickmeup-' + (++instances_count);
 			pickmeup
-				.on('click touchstart', options.binded.click)
+				.on('click' + options.events_namespace + ' touchstart', options.binded.click)
 				.addClass(views[options.view])
 				.append(html)
 				.on(
