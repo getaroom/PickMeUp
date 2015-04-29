@@ -1150,6 +1150,8 @@
 				trigger_event	= trigger_event.join(' ');
 				$this.on(trigger_event, options.binded.show);
 			}
+
+			options.$el = pickmeup;
 		});
 	};
 }));
