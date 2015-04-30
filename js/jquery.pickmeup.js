@@ -779,7 +779,7 @@
 					left = pos.left - pickmeup.offsetWidth;
 				}
 				if (left < viewport.l) {
-					left = pos.left + this.offsetWidth
+					left = pos.left + this.offsetWidth;
 				}
 				pickmeup.css({
 					display	: 'inline-block',
@@ -925,11 +925,13 @@
 		options.binded.fill();
 		if ($this.is('input')) {
 			var prepared_date	= prepareDate(options);
-			$this.val(
-				options.mode == 'single'
-					? (options.default_date === false ? $this.val() : prepared_date[0])
-					: prepared_date[0].join(options.separator)
-			);
+			if ($this.val() !== prepared_date[0]) {
+				$this.val(
+					options.mode == 'single'
+						? (options.default_date === false ? $this.val() : prepared_date[0])
+						: prepared_date[0].join(options.separator)
+				);
+			}
 		}
 	}
 	function destroy () {
